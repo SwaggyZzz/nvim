@@ -131,10 +131,10 @@ return packer.startup(function(use)
   -- })
 
   -- Colorschemes
-  -- use "lunarvim/colorschemes" -- A bunch of colorschemes you can try out
-  use "lunarvim/darkplus.nvim"
+  -- use "lunarvim/darkplus.nvim"
   -- use "joshdick/onedark.vim"
   -- use "sainnhe/gruvbox-material"
+  use "LunarVim/onedarker.nvim"
 
   -- cmp plugins
   use ({
