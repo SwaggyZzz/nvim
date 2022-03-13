@@ -27,10 +27,10 @@ nmap("<C-k>", "<C-w>k")
 nmap("<C-l>", "<C-w>l")
 
 -- Resize with arrows
-nmap("<C-Up>", ":resize -2<CR>")
-nmap("<C-Down>", ":resize +2<CR>")
-nmap("<C-Left>", ":vertical resize -2<CR>")
-nmap("<C-Right>", ":vertical resize +2<CR>")
+nmap("<S-Up>", ":resize -2<CR>")
+nmap("<S-Down>", ":resize +2<CR>")
+nmap("<S-Left>", ":vertical resize -2<CR>")
+nmap("<S-Right>", ":vertical resize +2<CR>")
 
 -- Close Buffer
 nmap("<leader>x", "<cmd>Bdelete!<CR>")

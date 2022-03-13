@@ -2,7 +2,7 @@ local core_modules = {
   "core.options",
   "core.keymaps",
   "plugins",
-  "core.colorscheme",
+  -- "core.colorscheme",
 }
 
 for _, module in ipairs(core_modules) do

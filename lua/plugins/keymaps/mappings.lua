@@ -11,8 +11,8 @@ local M = {
     prev_buffer = "<S-Tab>",
   },
   comment = {
-    -- toggle = "<leader>/",
-    toggle = "÷", -- <A-/>
+    toggle = "<leader>/",
+    -- toggle = "÷", -- <A-/>
   },
 
   -- map to <ESC> with no lag
@@ -53,6 +53,14 @@ local M = {
     oldfiles = "<leader>fo",
     themes = "<leader>th", -- NvChad theme picker
   },
+
+  hop = {
+    find_word = "<leader>w",
+    find_linej = "<leader>j",
+    find_linek = "<leader>k",
+    find_char1 = "<leader>c",
+    find_char2 = "<leader>cc",
+  }
 }
 
 return M

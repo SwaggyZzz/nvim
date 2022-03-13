@@ -75,10 +75,24 @@ return packer.startup(function(use)
   use "kyazdani42/nvim-web-devicons"
   use ({
     "kyazdani42/nvim-tree.lua",
+    opt = true,
+    cmd = { "NvimTreeToggle", "NvimTreeFindFile" },
     config = function()
       require "plugins.configs.nvim-tree"
     end
   })
+
+  -- Treesitter
+  use {
+    "nvim-treesitter/nvim-treesitter",
+    config = function()
+      require "plugins.configs.treesitter"
+    end,
+    run = ":TSUpdate",
+  }
+  use "JoosepAlviste/nvim-ts-context-commentstring"
+  use "SmiteshP/nvim-gps"
+
   use ({
     "akinsho/bufferline.nvim",
     config = function()
@@ -87,10 +101,31 @@ return packer.startup(function(use)
   })
   use "moll/vim-bbye"
   use ({
+    'arkav/lualine-lsp-progress',
+    after = "nvim-gps"
+  })
+  use ({
     "nvim-lualine/lualine.nvim",
+    after = "lualine-lsp-progress",
     config = function()
       require "plugins.configs.lualine"
     end
+  })
+  use ({
+    "phaazon/hop.nvim",
+    opt = true,
+    branch = 'v1',
+    cmd = {
+      "HopLine",
+      "HopLineStart",
+      "HopWord",
+      "HopPattern",
+      "HopChar1",
+      "HopChar2",
+    },
+    config = function()
+      require("hop").setup({ keys = "etovxqpdygfblzhckisuran" })
+    end,
   })
   use ({
     "akinsho/toggleterm.nvim",
@@ -131,10 +166,16 @@ return packer.startup(function(use)
   -- })
 
   -- Colorschemes
-  -- use "lunarvim/darkplus.nvim"
-  -- use "joshdick/onedark.vim"
-  -- use "sainnhe/gruvbox-material"
-  use "LunarVim/onedarker.nvim"
+  use "sainnhe/gruvbox-material"
+  use "mhartington/oceanic-next"
+  use "luisiacc/gruvbox-baby"
+  use ({
+    "catppuccin/nvim",
+    as = "catppuccin",
+    config = function()
+      require "plugins.configs.catppuccin"
+    end
+  })
 
   -- cmp plugins
   use ({
@@ -172,21 +213,18 @@ return packer.startup(function(use)
     end
   })
 
-  -- Treesitter
-  use {
-    "nvim-treesitter/nvim-treesitter",
-    config = function()
-      require "plugins.configs.treesitter"
-    end,
-    run = ":TSUpdate",
-  }
-  use "JoosepAlviste/nvim-ts-context-commentstring"
-
   -- Git
   use ({
     "lewis6991/gitsigns.nvim",
     config = function()
       require "plugins.configs.gitsigns"
+    end
+  })
+
+  use ({
+    "norcalli/nvim-colorizer.lua",
+    config = function()
+      require "plugins.configs.colorizer"
     end
   })
 
