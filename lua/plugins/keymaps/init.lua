@@ -45,6 +45,12 @@ local M = {
     nmap(m.set_loclist, "<cmd>lua vim.diagnostic.setloclist()<CR>")
     nmap(m.formatting, "<cmd>lua vim.lsp.buf.formatting()<CR>")
   end,
+  -- Renamer
+  renamer = function()
+    local m = plugin_maps.renamer
+    nmap(m.rename, '<cmd>lua require("renamer").rename()<cr>')
+    map("v", m.rename, '<cmd>lua require("renamer").rename()<cr>')
+  end,
   -- NvimTree
   nvimtree = function()
     local m = plugin_maps.nvimtree

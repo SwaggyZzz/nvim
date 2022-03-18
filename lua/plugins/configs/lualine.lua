@@ -45,14 +45,14 @@ local diagnostics = {
 	sources = { "nvim_diagnostic" },
 	sections = { "error", "warn" },
 	symbols = { error = " ", warn = " ", info = " " },
-	colored = false,
+	-- colored = false,
 	update_in_insert = false,
 	always_visible = true,
 }
 
 local diff = {
 	"diff",
-	colored = false,
+	-- colored = false,
 	symbols = { added = " ", modified = " ", removed = " " }, -- changes diff symbols
   cond = hide_in_width
 }
@@ -66,7 +66,7 @@ local mode = {
 
 local filetype = {
 	"filetype",
-	icons_enabled = false,
+	icons_enabled = true,
 	icon = nil,
 }
 
@@ -88,9 +88,10 @@ end
 lualine.setup({
 	options = {
 		icons_enabled = true,
-		theme = "auto",
-		component_separators = { left = "", right = "" },
-		section_separators = { left = "", right = "" },
+		theme = "tokyonight",
+    component_separators = { left = "|", right = "|" },
+    -- https://github.com/ryanoasis/powerline-extra-symbols
+    section_separators = { left = " ", right = "" },
 		disabled_filetypes = { "alpha", "dashboard", "NvimTree", "Outline" },
 		always_divide_middle = true,
 	},
@@ -98,11 +99,15 @@ lualine.setup({
 		lualine_a = { mode },
 		lualine_b = { branch, diagnostics },
 		lualine_c = {
-			{ "lsp_progress" },
+			{ 
+        "lsp_progress",
+        spinner_symbols = { " ", " ", " ", " ", " ", " " },
+      },
 			{ gps_content, cond = gps.is_available },
 		},
 		-- lualine_x = { "encoding", "fileformat", "filetype" },
-		lualine_x = { diff, spaces, "encoding", filetype },
+		-- lualine_x = { diff, spaces, "encoding", "filetype" },
+    lualine_x = { diff, "filesize", "encoding", "filetype" },
 		lualine_y = { "progress" },
 		lualine_z = {"location" },
 	},

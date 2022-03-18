@@ -21,10 +21,20 @@ vim.g.maplocalleader = " "
 
 -- Normal --
 -- Better window navigation
-nmap("<C-h>", "<C-w>h")
-nmap("<C-j>", "<C-w>j")
-nmap("<C-k>", "<C-w>k")
-nmap("<C-l>", "<C-w>l")
+nmap("˙", "<C-w>h")
+nmap("∆", "<C-w>j")
+nmap("˚", "<C-w>k")
+nmap("¬", "<C-w>l")
+
+-- windows 分屏快捷键
+nmap("sv", ":vsp<CR>")
+nmap("sh", ":sp<CR>")
+-- 关闭当前
+nmap("sc", "<C-w>c")
+-- 关闭其他
+nmap("so", "<C-w>o") -- close others
+-- 相等比例
+nmap("s=", "<C-w>=")
 
 -- Resize with arrows
 nmap("<S-Up>", ":resize -2<CR>")
@@ -33,7 +43,7 @@ nmap("<S-Left>", ":vertical resize -2<CR>")
 nmap("<S-Right>", ":vertical resize +2<CR>")
 
 -- Close Buffer
-nmap("<leader>x", "<cmd>Bdelete!<CR>")
+nmap("<C-w>", "<cmd>Bdelete!<CR>")
 -- Copy whole file content
 nmap("<C-a>", ":%y+ <CR>")
 
@@ -42,16 +52,31 @@ nmap("<C-a>", ":%y+ <CR>")
 -- nmap("<S-h>", ":bprevious<CR>")
 
 -- Move text up and down
-nmap("∆", "<Esc>:m .+1<CR>==gi") -- <A-j>
-nmap("˚", "<Esc>:m .-2<CR>==gi") -- <A-k>
+-- nmap("∆", "<Esc>:m .+1<CR>==gi") -- <A-j>
+-- nmap("˚", "<Esc>:m .-2<CR>==gi") -- <A-k>
 
 -- use ESC to turn off search highlighting
 nmap("<Esc>", ":noh <CR>")
 -- yank from current cursor to end of line
 nmap("Y", "yg$")
 
-nmap("<C-w>", ":w! <CR>")
+nmap("<C-s>", ":w! <CR>")
 nmap("<C-q>", ":q! <CR>")
+
+nmap("H", "^")
+nmap("L", "$")
+
+-- 上下滚动浏览
+nmap("J", "4j")
+nmap("K", "4k")
+-- ctrl u / ctrl + d  只移动9行，默认移动半屏
+nmap("<C-u>", "9k")
+nmap("<C-d>", "9j")
+
+-- Pakcer --
+nmap("<leader>ps", ":PackerSync <CR>")
+nmap("<leader>pc", ":PackerCompile <CR>")
+nmap("<leader>pi", ":PackerInstall <CR>")
 
 -- Insert --
 -- navigation within insert mode
@@ -79,11 +104,8 @@ map("x", "K", ":move '<-2<CR>gv-gv")
 map("x", "∆", ":move '>+1<CR>gv-gv") -- <A-j>
 map("x", "˚", ":move '<-2<CR>gv-gv") -- <A-k>
 
-
--- Terminal --
--- Better terminal navigation
--- keymap("t", "<C-h>", "<C-\\><C-N><C-w>h", term_opts)
--- keymap("t", "<C-j>", "<C-\\><C-N><C-w>j", term_opts)
--- keymap("t", "<C-k>", "<C-\\><C-N><C-w>k", term_opts)
--- keymap("t", "<C-l>", "<C-\\><C-N><C-w>l", term_opts)
+-- Command --
+-- 命令行下 Ctrl+j/k  上一个下一个
+map("c", "<C-j>", "<C-n>")
+map("c", "<C-k>", "<C-p>")
 
