@@ -61,7 +61,7 @@ nmap("<Esc>", ":noh <CR>")
 nmap("Y", "yg$")
 
 nmap("<C-s>", ":w! <CR>")
-nmap("<C-q>", ":q! <CR>")
+nmap("<C-q>", ":q <CR>")
 
 nmap("H", "^")
 nmap("L", "$")
@@ -86,6 +86,8 @@ imap("<C-k>", "<Up>")
 imap("<C-j>", "<Down>")
 imap("<C-e>", "<End>")
 imap("<C-a>", "<ESC>^i")
+
+imap("<C-s>", "<ESC>:w! <CR>")
 
 -- Visual --
 -- Stay in indent mode

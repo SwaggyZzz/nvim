@@ -64,10 +64,9 @@ return packer.startup(function(use)
 
   -- JK Esc
   use ({
-    "max397574/better-escape.nvim",
-    config = function()
-      require("better_escape").setup()
-    end,
+    "jdhao/better-escape.vim",
+    opt = true,
+    event = "InsertEnter"
   })
   -- Icons
   use "kyazdani42/nvim-web-devicons"
@@ -177,11 +176,31 @@ return packer.startup(function(use)
       require "plugins.configs.gitsigns"
     end
   })
+  use ({
+    "tpope/vim-fugitive",
+    opt = true,
+    cmd = { "Git", "G" },
+  })
   -- Colorizer
   use ({
     "norcalli/nvim-colorizer.lua",
     config = function()
       require "plugins.configs.colorizer"
+    end
+  })
+  -- StartupTime
+  use ({
+    "dstein64/vim-startuptime",
+    opt = true,
+    cmd = { "StartupTime" }
+  })
+  -- specs
+  use ({
+    "edluffy/specs.nvim",
+    opt = true,
+    event = "CursorMoved",
+    config = function ()
+      require "plugins.configs.specs"
     end
   })
   ---------------------------- LSP ----------------------------
@@ -276,12 +295,21 @@ return packer.startup(function(use)
     end,
   })
   -- surround
-use ({
-  "Mephistophiles/surround.nvim",
-  config = function()
-    require "plugins.configs.surround"
-  end,
-})
+  use ({
+    "Mephistophiles/surround.nvim",
+    config = function()
+      require "plugins.configs.surround"
+    end,
+  })
+  -- vim-matchup
+  use ({
+    "andymass/vim-matchup",
+    after = "nvim-treesitter",
+    config = function ()
+      require "plugins.configs.matchup"
+    end
+  })
+  
   ---------------------------- Term ----------------------------
   use ({
     "akinsho/toggleterm.nvim",

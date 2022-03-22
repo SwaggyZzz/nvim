@@ -2,6 +2,7 @@ local core_modules = {
   "core.options",
   "core.keymaps",
   "plugins",
+  "core.autocommands",
   "core.colorscheme",
 }
 
