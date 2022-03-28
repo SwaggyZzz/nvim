@@ -42,7 +42,7 @@ local auto_format_file_type = {
 -- Alternatively, you may also register handlers on specific server instances instead (see example below).
 lsp_installer.on_server_ready(function(server)
 
-  local format_files = auto_format_file_type[server]
+  local format_files = auto_format_file_type[server.name]
   if format_files then
     for _, file in pairs(format_files) do
       setup_auto_format(file)

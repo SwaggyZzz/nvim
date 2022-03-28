@@ -14,8 +14,8 @@ local M = {
   },
   -- Comment
   comment = {
-    -- toggle = "<leader>/",
-    toggle = "÷", -- <A-/>
+    toggle = "<A-/>",
+    -- toggle = "÷", -- <A-/>
   },
 
   -- map to <ESC> with no lag
@@ -36,8 +36,9 @@ local M = {
     float_diagnostics = "gl",
     goto_prev = "[d",
     goto_next = "]d",
-    set_loclist = "<leader>q",
-    formatting = "Ï",
+    -- set_loclist = "<leader>q",
+    set_loclist = "gsl",
+    formatting = "<A-S-f>",
   },
   -- Renamer
   renamer = {
@@ -137,6 +138,14 @@ local M = {
     close = "<C-e>",
     select = "<CR>",
   },
+  -- Aerial
+  aerial = {
+    toggle = "<leader>a",
+    prev = "{",
+    next = "}",
+    prevUp = "[[",
+    nextUp = "]]",
+  },
   -- ToggleTerm
   term = {
     close  = "<esc>",
@@ -145,6 +154,15 @@ local M = {
     down  = "<C-j>",
     left  = "<C-h>",
     right  = "<C-l>",
+  },
+  -- Tabout
+  tabout = {
+    tabkey = "<A-l>",
+    backwards_tabkey = "<A-h>",
+  },
+  -- Nvim-treesitter
+  nvim_treesitter = {
+    all_indent_format = "<A-S-i>",
   }
 }
 

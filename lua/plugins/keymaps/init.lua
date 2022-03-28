@@ -3,6 +3,7 @@ local plugin_maps = require "plugins.keymaps.mappings"
 
 local map = utils.map
 local nmap = utils.nmap
+local imap = utils.imap
 
 local M = {
   -- Packer
@@ -77,6 +78,11 @@ local M = {
     nmap(m.find_linek, ":<C-u>HopLine<CR>")
     nmap(m.find_char1, ":<C-u>HopChar1<CR>")
     nmap(m.find_char2, ":<C-u>HopChar2<CR>")
+  end,
+  -- NvimTreesitter
+  nvim_treesitter = function ()
+    local m = plugin_maps.nvim_treesitter
+    nmap(m.all_indent_format, "gg=G<C-o>")
   end
 }
 

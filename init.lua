@@ -1,9 +1,16 @@
+local present, impatient = pcall(require, "impatient")
+
+if present then
+  impatient.enable_profile()
+end
+
+
 local core_modules = {
   "core.options",
   "core.keymaps",
   "plugins",
-  "core.autocommands",
-  "core.colorscheme",
+  "core.event",
+  -- "core.colorscheme",
 }
 
 for _, module in ipairs(core_modules) do

@@ -21,10 +21,14 @@ vim.g.maplocalleader = " "
 
 -- Normal --
 -- Better window navigation
-nmap("˙", "<C-w>h")
-nmap("∆", "<C-w>j")
-nmap("˚", "<C-w>k")
-nmap("¬", "<C-w>l")
+-- nmap("˙", "<C-w>h") -- <A-h>
+-- nmap("∆", "<C-w>j") -- <A-j>
+-- nmap("˚", "<C-w>k") -- <A-k>
+-- nmap("¬", "<C-w>l") -- <A-l>
+nmap("<A-h>", "<C-w>h")
+nmap("<A-j>", "<C-w>j")
+nmap("<A-k>", "<C-w>k")
+nmap("<A-l>", "<C-w>l")
 
 -- windows 分屏快捷键
 nmap("sv", ":vsp<CR>")
@@ -42,8 +46,10 @@ nmap("<S-Down>", ":resize +2<CR>")
 nmap("<S-Left>", ":vertical resize -2<CR>")
 nmap("<S-Right>", ":vertical resize +2<CR>")
 
+nmap("<A-s>", ":w! <CR>")
+nmap("<A-q>", ":q <CR>")
 -- Close Buffer
-nmap("<C-w>", "<cmd>Bdelete!<CR>")
+nmap("<A-w>", "<cmd>Bdelete!<CR>")
 -- Copy whole file content
 nmap("<C-a>", ":%y+ <CR>")
 
@@ -59,9 +65,6 @@ nmap("<C-a>", ":%y+ <CR>")
 nmap("<Esc>", ":noh <CR>")
 -- yank from current cursor to end of line
 nmap("Y", "yg$")
-
-nmap("<C-s>", ":w! <CR>")
-nmap("<C-q>", ":q <CR>")
 
 nmap("H", "^")
 nmap("L", "$")
@@ -80,14 +83,14 @@ nmap("<leader>pi", ":PackerInstall <CR>")
 
 -- Insert --
 -- navigation within insert mode
-imap("<C-h>", "<Left>")
-imap("<C-l>", "<Right>")
-imap("<C-k>", "<Up>")
-imap("<C-j>", "<Down>")
-imap("<C-e>", "<End>")
-imap("<C-a>", "<ESC>^i")
+imap("<A-h>", "<Left>")
+imap("<A-l>", "<Right>")
+imap("<A-k>", "<Up>")
+imap("<A-j>", "<Down>")
+imap("<A-S-l>", "<End>")
+imap("<A-S-h>", "<ESC>^i")
 
-imap("<C-s>", "<ESC>:w! <CR>")
+imap("<A-s>", "<ESC>:w! <CR>")
 
 -- Visual --
 -- Stay in indent mode
@@ -95,16 +98,20 @@ map("v", "<", "<gv")
 map("v", ">", ">gv")
 
 -- Move text up and down
-map("v", "∆", ":m .+1<CR>==") -- <A-j>
-map("v", "˚", ":m .-2<CR>==") -- <A-k>
+-- map("v", "∆", ":m .+1<CR>==") -- <A-j>
+-- map("v", "˚", ":m .-2<CR>==") -- <A-k>
+map("v", "<A-j>", ":m .+1<CR>==")
+map("v", "<A-k>", ":m .-2<CR>==")
 map("v", "p", '"_dP')
 
 -- Visual Block --
 -- Move text up and down
 map("x", "J", ":move '>+1<CR>gv-gv")
 map("x", "K", ":move '<-2<CR>gv-gv")
-map("x", "∆", ":move '>+1<CR>gv-gv") -- <A-j>
-map("x", "˚", ":move '<-2<CR>gv-gv") -- <A-k>
+-- map("x", "∆", ":move '>+1<CR>gv-gv") -- <A-j>
+-- map("x", "˚", ":move '<-2<CR>gv-gv") -- <A-k>
+map("x", "<A-j>", ":move '>+1<CR>gv-gv")
+map("x", "<A-k>", ":move '<-2<CR>gv-gv")
 
 -- Command --
 -- 命令行下 Ctrl+j/k  上一个下一个

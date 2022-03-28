@@ -15,9 +15,26 @@ configs.setup {
     disable = { "" }, -- list of language that will be disabled
     additional_vim_regex_highlighting = true,
   },
-  indent = { enable = true, disable = { "yaml" } },
+  indent = {
+    enable = true,
+    -- disable = { "yaml" },
+  },
   context_commentstring = {
     enable = true,
     enable_autocmd = false,
+  },
+  matchup = {
+    enable = true, -- mandatory, false will disable the whole extension
+    -- disable = { "c", "ruby" },  -- optional, list of language that will be disabled
+    -- [options]
+  },
+  incremental_selection = {
+    enable = true,
+    keymaps = {
+      init_selection = "<CR>",
+      node_incremental = "<CR>",
+      node_decremental = "<BS>",
+      scope_incremental = "<TAB>",
+    },
   },
 }

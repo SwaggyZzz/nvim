@@ -18,14 +18,6 @@ if fn.empty(fn.glob(install_path)) > 0 then
   vim.cmd [[packadd packer.nvim]]
 end
 
--- Autocommand that reloads neovim whenever you save the plugins/init.lua file
-vim.cmd [[
-  augroup packer_user_config
-    autocmd!
-    autocmd BufWritePost plugins/init.lua source <afile> | PackerSync
-  augroup end
-]]
-
 -- Use a protected call so we don't error out on first use
 local status_ok, packer = pcall(require, "packer")
 if not status_ok then
@@ -63,7 +55,7 @@ return packer.startup(function(use)
   use "nvim-lua/plenary.nvim"
 
   -- JK Esc
-  use ({
+  use({
     "jdhao/better-escape.vim",
     opt = true,
     event = "InsertEnter"
@@ -71,7 +63,7 @@ return packer.startup(function(use)
   -- Icons
   use "kyazdani42/nvim-web-devicons"
   -- Nvim-tree
-  use ({
+  use({
     "kyazdani42/nvim-tree.lua",
     opt = true,
     cmd = { "NvimTreeToggle", "NvimTreeFindFile" },
@@ -80,18 +72,20 @@ return packer.startup(function(use)
     end
   })
   -- Bufferline
-  use ({
+  use({
     "akinsho/bufferline.nvim",
+    opt = true,
+    event = "BufRead",
     config = function()
       require "plugins.configs.bufferline"
     end
   })
   -- Lualine
-  use ({
+  use({
     'arkav/lualine-lsp-progress',
     after = "nvim-gps"
   })
-  use ({
+  use({
     "nvim-lualine/lualine.nvim",
     after = "lualine-lsp-progress",
     config = function()
@@ -99,21 +93,21 @@ return packer.startup(function(use)
     end
   })
   -- Telescope
-  use ({
+  use({
     "nvim-telescope/telescope.nvim",
     config = function()
       require "plugins.configs.telescope"
     end
   })
   -- Dashboard
-  use ({
+  use({
     "goolord/alpha-nvim",
     config = function()
       require "plugins.configs.alpha"
     end
   })
   -- Project
-  use ({
+  use({
     "ahmedkhalf/project.nvim",
     config = function()
       require "plugins.configs.project"
@@ -122,32 +116,35 @@ return packer.startup(function(use)
   -- Treesitter
   use {
     "nvim-treesitter/nvim-treesitter",
+    run = ":TSUpdate",
     config = function()
       require "plugins.configs.treesitter"
     end,
-    run = ":TSUpdate",
   }
-  use "JoosepAlviste/nvim-ts-context-commentstring"
-  use ({
+  use({
+    "JoosepAlviste/nvim-ts-context-commentstring",
+    after = "nvim-treesitter",
+  })
+  use({
     "windwp/nvim-ts-autotag",
     after = "nvim-treesitter",
     config = function()
       require("nvim-ts-autotag").setup()
     end
   })
-  use ({
+  use({
     "SmiteshP/nvim-gps",
     after = "nvim-treesitter",
   })
   -- Autopairs
-  use ({
+  use({
     "windwp/nvim-autopairs",
     config = function()
       require "plugins.configs.autopairs"
     end
   })
   -- Comment
-  use ({
+  use({
     "numToStr/Comment.nvim",
     config = function()
       require "plugins.configs.comment"
@@ -156,46 +153,41 @@ return packer.startup(function(use)
   -- Buffer 优雅退出
   use "moll/vim-bbye"
   -- Impatient 启动加速缓存
-  use ({
-    "lewis6991/impatient.nvim",
-    config = function()
-      require "plugins.configs.impatient"
-    end
-  })
+  use "lewis6991/impatient.nvim"
   -- Indent 缩进
-  use ({
+  use({
     "lukas-reineke/indent-blankline.nvim",
     config = function()
       require "plugins.configs.indentline"
     end
   })
   -- Git
-  use ({
+  use({
     "lewis6991/gitsigns.nvim",
     config = function()
       require "plugins.configs.gitsigns"
     end
   })
-  use ({
-    "tpope/vim-fugitive",
-    opt = true,
-    cmd = { "Git", "G" },
-  })
+  -- use({
+  --   "tpope/vim-fugitive",
+  --   opt = true,
+  --   cmd = { "Git", "G" },
+  -- })
   -- Colorizer
-  use ({
+  use({
     "norcalli/nvim-colorizer.lua",
     config = function()
       require "plugins.configs.colorizer"
     end
   })
   -- StartupTime
-  use ({
+  use({
     "dstein64/vim-startuptime",
     opt = true,
     cmd = { "StartupTime" }
   })
   -- specs
-  use ({
+  use({
     "edluffy/specs.nvim",
     opt = true,
     event = "CursorMoved",
@@ -205,33 +197,38 @@ return packer.startup(function(use)
   })
   ---------------------------- LSP ----------------------------
   -- Lsp-config
-  use ({
+  use({
     "neovim/nvim-lspconfig",
     config = function()
       require "plugins.configs.lsp"
     end
   })
   use "williamboman/nvim-lsp-installer"
-  use "ray-x/lsp_signature.nvim"
+  use({
+    "ray-x/lsp_signature.nvim",
+    config = function()
+      require "plugins.configs.lsp.lsp_signature"
+    end
+  })
   -- Null-ls formatters and linters
   use "jose-elias-alvarez/null-ls.nvim"
   use "b0o/schemastore.nvim" -- json schema
   use "jose-elias-alvarez/nvim-lsp-ts-utils"
-  use ({
+  use({
     "simrat39/rust-tools.nvim",
     config = function()
-      require "plugins.configs.lsp.rust-tools"
+      require "plugins.configs.lsp.rust_tools"
     end
   })
   -- Renamer
-  use ({
+  use({
     "filipdutescu/renamer.nvim",
     config = function()
       require "plugins.configs.renamer"
     end
   })
   -- 补全引擎
-  use ({
+  use({
     "hrsh7th/nvim-cmp",
     config = function()
       require "plugins.configs.cmp"
@@ -252,26 +249,26 @@ return packer.startup(function(use)
 
   ---------------------------- Colorschemes ----------------------------
   use "folke/tokyonight.nvim"
+  -- use 'rmehri01/onenord.nvim'
   -- use "SwaggyZzz/gruvbox-baby"
-  -- use "sainnhe/gruvbox-material"
   -- use "mhartington/oceanic-next"
-  -- use ({
-    -- "catppuccin/nvim",
-    -- as = "catppuccin",
-    -- config = function()
-    --   require "plugins.configs.catppuccin"
-    -- end
-  -- })
+  use({
+    "catppuccin/nvim",
+    as = "catppuccin",
+    config = function()
+      require "plugins.configs.catppuccin"
+    end
+  })
   ---------------------------- Editor ----------------------------
   -- 跳转到单词
-  use ({
+  use({
     "unblevable/quick-scope",
     config = function()
       require "plugins.configs.quick-scope"
     end
   })
   -- 快速查找跳转
-  use ({
+  use({
     "phaazon/hop.nvim",
     opt = true,
     branch = 'v1',
@@ -288,30 +285,61 @@ return packer.startup(function(use)
     end,
   })
   -- Peeking the buffer while entering command :{number}
-  use ({
-    "nacro90/numb.nvim",
-    config = function()
-      require "plugins.configs.numb"
-    end,
-  })
+  -- use({
+  --   "nacro90/numb.nvim",
+  --   config = function()
+  --     require "plugins.configs.numb"
+  --   end,
+  -- })
   -- surround
-  use ({
+  use({
     "Mephistophiles/surround.nvim",
     config = function()
       require "plugins.configs.surround"
     end,
   })
   -- vim-matchup
-  use ({
+  use({
     "andymass/vim-matchup",
     after = "nvim-treesitter",
     config = function ()
       require "plugins.configs.matchup"
     end
   })
-  
-  ---------------------------- Term ----------------------------
+  -- vim-cool
+  use({
+    "romainl/vim-cool",
+    opt = true,
+    event = { "CursorMoved", "InsertEnter" },
+  })
+  -- tabout
+  use({
+    "abecodes/tabout.nvim",
+    opt = true,
+    event = "InsertEnter",
+    wants = "nvim-treesitter",
+    after = "nvim-cmp",
+    config = function ()
+      require "plugins.configs.tabout"
+    end
+  })
+  -- DiffView
+  use({
+    "sindrets/diffview.nvim",
+    opt = true,
+    cmd = { "DiffviewOpen" },
+  })
+  -- Show Code Structure
   use ({
+    'stevearc/aerial.nvim',
+    after = "nvim-lspconfig",
+    config = function ()
+      require "plugins.configs.aerial"
+    end
+  })
+
+  ---------------------------- Term ----------------------------
+  use({
     "akinsho/toggleterm.nvim",
     config = function()
       require "plugins.configs.toggleterm"

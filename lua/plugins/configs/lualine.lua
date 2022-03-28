@@ -85,10 +85,26 @@ local spaces = function()
 	return "spaces: " .. vim.api.nvim_buf_get_option(0, "shiftwidth")
 end
 
+
+local mini_sections = {
+		lualine_a = {},
+		lualine_b = {},
+		lualine_c = {},
+		lualine_x = {},
+		lualine_y = {},
+		lualine_z = { "location" },
+	}
+local aerial = {
+	sections = mini_sections,
+	filetypes = { "aerial" },
+}
+
 lualine.setup({
 	options = {
 		icons_enabled = true,
-		theme = "tokyonight",
+    theme = "catppuccin",
+		-- theme = "tokyonight",
+    -- theme = "auto",
     component_separators = { left = "|", right = "|" },
     -- https://github.com/ryanoasis/powerline-extra-symbols
     section_separators = { left = " ", right = "" },
@@ -99,7 +115,7 @@ lualine.setup({
 		lualine_a = { mode },
 		lualine_b = { branch, diagnostics },
 		lualine_c = {
-			{ 
+			{
         "lsp_progress",
         spinner_symbols = { " ", " ", " ", " ", " ", " " },
       },
@@ -120,5 +136,7 @@ lualine.setup({
 		lualine_z = {},
 	},
 	tabline = {},
-	extensions = {},
+	extensions = {
+		aerial,
+	},
 })

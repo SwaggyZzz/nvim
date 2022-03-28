@@ -4,11 +4,12 @@ if not status_ok then
 end
 
 catppuccin.setup({
-  transparent_background = true,
+  transparent_background = false,
   term_colors = true,
   styles = {
     comments = "italic",
-    functions = "bold",
+    functions = "NONE",
+    -- functions = "bold",
     keywords = "NONE",
     strings = "NONE",
     variables = "NONE",
@@ -18,10 +19,10 @@ catppuccin.setup({
     native_lsp = {
       enabled = true,
       virtual_text = {
-        errors = "italic",
-        hints = "italic",
-        warnings = "italic",
-        information = "italic",
+        errors = "NONE",
+        hints = "NONE",
+        warnings = "NONE",
+        information = "NONE",
       },
       underlines = {
         errors = "underline",

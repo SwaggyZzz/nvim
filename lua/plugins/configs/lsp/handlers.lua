@@ -67,6 +67,12 @@ end
 M.on_attach = function(client, bufnr)
   lsp_keymaps(bufnr)
   lsp_highlight_document(client)
+
+  local aerial_ok, aerial = pcall(require, "aerial")
+  if not aerial_ok then
+    return
+  end
+  aerial.on_attach(client, bufnr)
 end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
