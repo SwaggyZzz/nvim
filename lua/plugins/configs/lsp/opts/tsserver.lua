@@ -2,7 +2,7 @@ local status_ok, ts_utils = pcall(require, "nvim-lsp-ts-utils")
 if not status_ok then
   return
 end
-local on_attach = require("plugins.configs.lsp.handlers").on_attach
+local common_on_attach = require("plugins.configs.lsp.utils").common_on_attach
 
 return {
   flags = {
@@ -43,12 +43,13 @@ return {
     client.resolved_capabilities.document_formatting = false
     client.resolved_capabilities.document_range_formatting = false
 
+    common_on_attach(client, bufnr)
+
     -- no default maps, so you may want to define some here
     local opts = { silent = true }
     vim.api.nvim_buf_set_keymap(bufnr, "n", "gs", ":TSLspOrganize<CR>", opts)
     vim.api.nvim_buf_set_keymap(bufnr, "n", "gr", ":TSLspRenameFile<CR>", opts)
     vim.api.nvim_buf_set_keymap(bufnr, "n", "gi", ":TSLspImportAll<CR>", opts)
 
-    on_attach(client, bufnr)
   end,
 }

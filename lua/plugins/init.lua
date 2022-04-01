@@ -1,354 +1,359 @@
-local fn = vim.fn
+local present, packer = pcall(require, "plugins.packerInit")
 
--- 插件安装目录
--- ~/.local/share/nvim/site/pack/packer/
--- 自动安装 Packer.nvim
-local install_path = fn.stdpath "data" .. "/site/pack/packer/start/packer.nvim"
-if fn.empty(fn.glob(install_path)) > 0 then
-  vim.notify("正在安装Pakcer.nvim，请稍后...")
-  PACKER_BOOTSTRAP = fn.system {
-    "git",
-    "clone",
-    "--depth",
-    "1",
-    "https://github.com/wbthomason/packer.nvim",
-    install_path,
-  }
-  vim.notify("Pakcer.nvim 安装完毕")
-  vim.cmd [[packadd packer.nvim]]
+if not present then
+   return false
 end
 
--- Use a protected call so we don't error out on first use
-local status_ok, packer = pcall(require, "packer")
-if not status_ok then
-  return
-end
+local plugins = {
+   {
+      "wbthomason/packer.nvim",
+      event = "VimEnter",
+   },
+   { "nvim-lua/plenary.nvim" },
+   { "lewis6991/impatient.nvim" },
+   { "moll/vim-bbye" },
+   { "nathom/filetype.nvim" },
+   { "kyazdani42/nvim-web-devicons" },
+   {
+      "lunarvim/onedarker.nvim",
+      config = function()
+         require("onedarker").setup()
+      end,
+   },
+   {
+      "goolord/alpha-nvim",
+      event = "BufWinEnter",
+      config = function()
+         require "plugins.configs.alpha"
+      end
+   },
+   {
+      "nvim-lualine/lualine.nvim",
+      after = "lualine-lsp-progress",
+      config = function()
+         require "plugins.configs.lualine"
+      end
+   },
+   {
+      'arkav/lualine-lsp-progress',
+      after = "nvim-gps"
+   },
+   {
+      "akinsho/bufferline.nvim",
+      event = "BufRead",
+      config = function()
+         require "plugins.configs.bufferline"
+      end,
+      setup = function()
+         require("core.keymaps").bufferline_setup()
+      end,
+   },
+   {
+      "lukas-reineke/indent-blankline.nvim",
+      event = "BufRead",
+      config = function()
+         require "plugins.configs.indentline"
+      end
+   },
+   {
+      "NvChad/nvim-colorizer.lua",
+      event = "BufRead",
+      config = function()
+         require "plugins.configs.colorizer"
+      end
+   },
+   -- StartupTime
+   {
+      "dstein64/vim-startuptime",
+      opt = true,
+      cmd = { "StartupTime" }
+   },
+   -- 取消搜索高亮
+   {
+      "romainl/vim-cool",
+      opt = true,
+      event = { "CursorMoved", "InsertEnter" },
+   },
+   {
+      "jdhao/better-escape.vim",
+      opt = true,
+      event = "InsertEnter"
+   },
+   {
+      "lewis6991/gitsigns.nvim",
+      opt = true,
+      event = { "BufRead", "BufNewFile" },
+      config = function()
+         require "plugins.configs.gitsigns"
+      end,
+      setup = function()
+         require("core.utils").packer_lazy_load "gitsigns.nvim"
+      end,
+   },
+   {
+      "windwp/nvim-autopairs",
+      after = "nvim-cmp",
+      config = function()
+         require "plugins.configs.autopairs"
+      end
+   },
+   {
+      "numToStr/Comment.nvim",
+      module = "Comment",
+      keys = { "gcc" },
+      config = function()
+         require "plugins.configs.comment"
+      end,
+      setup = function()
+         require("core.keymaps").comment_setup()
+      end,
+   },
+   {
+      "kyazdani42/nvim-tree.lua",
+      cmd = { "NvimTreeToggle", "NvimTreeFocus" },
+      config = function()
+         require "plugins.configs.nvim-tree"
+      end,
+      setup = function()
+         require("core.keymaps").nvimtree_setup()
+      end,
+   },
+   {
+      "petertriho/nvim-scrollbar",
+      opt = true,
+      event = "BufRead",
+      config = function()
+         require("scrollbar").setup()
+      end,
+   },
+   ------------------------------- Treesitter ---------------------------------
+   {
+      "nvim-treesitter/nvim-treesitter",
+      event = { "BufRead", "BufNewFile" },
+      run = ":TSUpdate",
+      config = function()
+         require "plugins.configs.treesitter"
+      end,
+   },
+   {
+      "SmiteshP/nvim-gps",
+      after = "nvim-treesitter",
+   },
+   {
+      "JoosepAlviste/nvim-ts-context-commentstring",
+      event = "BufRead",
+   },
+   {
+      "windwp/nvim-ts-autotag",
+      ft = { "html", "xml", "typescriptreact" },
+      config = function()
+         require("nvim-ts-autotag").setup()
+      end
+   },
+   {
+      "p00f/nvim-ts-rainbow",
+      after = "nvim-treesitter",
+      event = "BufRead",
+   },
+   ------------------------------- Treesitter End ---------------------------------
+   --
+   -------------------------------- Lsp Config ------------------------------------
+   {
+      "neovim/nvim-lspconfig",
+      module = "lspconfig",
+      opt = true,
+      setup = function()
+         require("core.utils").packer_lazy_load "nvim-lspconfig"
+         -- reload the current file so lsp actually starts for it
+         vim.defer_fn(function()
+            vim.cmd 'if &ft == "packer" | echo "" | else | silent! e %'
+         end, 0)
+      end,
+      config = function()
+         require "plugins.configs.lsp"
+      end,
+   },
+   {
+      "williamboman/nvim-lsp-installer",
+      after = "nvim-lspconfig",
+      setup = function()
+         vim.cmd [[packadd nvim-lsp-installer]]
+         require("core.utils").packer_lazy_load "nvim-lsp-installer"
+      end,
+   },
+   {
+      "jose-elias-alvarez/nvim-lsp-ts-utils",
+      after = "nvim-lspconfig",
+      setup = function()
+         vim.cmd [[packadd nvim-lsp-ts-utils]]
+         require("core.utils").packer_lazy_load "nvim-lsp-ts-utils"
+      end,
+   },
+   {
+      "jose-elias-alvarez/null-ls.nvim",
+      after = "nvim-lspconfig",
+      setup = function()
+         vim.cmd [[packadd null-ls.nvim]]
+         require("core.utils").packer_lazy_load "null-ls.nvim"
+      end,
+   },
+   {
+      "b0o/schemastore.nvim",
+      after = "nvim-lspconfig",
+      setup = function()
+         vim.cmd [[packadd schemastore.nvim]]
+         require("core.utils").packer_lazy_load "schemastore.nvim"
+      end,
+   },
 
-local keymaps_status_ok = pcall(require, "plugins.keymaps")
-if not keymaps_status_ok then
-  return
-end
+   {
+      "ray-x/lsp_signature.nvim",
+      event = "BufRead",
+      after = "nvim-lspconfig",
+      config = function()
+         require "plugins.configs.lsp.lsp_signature"
+      end
+   },
+   { "antoinemadec/FixCursorHold.nvim" }, -- This is needed to fix lsp doc highlight
+   -- {
+   --    "filipdutescu/renamer.nvim",
+   --    event = "InsertEnter",
+   --    setup = function()
+   --       require("core.keymaps").renamer_setup()
+   --    end,
+   --    config = function()
+   --       require "plugins.configs.renamer"
+   --    end
+   -- },
+   -------------------------------- Lsp Config End ------------------------------------
+   --
+   ------------------------------- Cmp ------------------------------------
+   {
+      "rafamadriz/friendly-snippets",
+      event = "InsertEnter",
+   },
+   {
+      "hrsh7th/nvim-cmp",
+      after = "friendly-snippets",
+      config = function()
+         require "plugins.configs.cmp"
+      end
+   },
+   {
+      "L3MON4D3/LuaSnip",
+      after = "nvim-cmp",
+      config = function()
+         require "plugins.configs.luasnip"
+      end
+   },
+   {
+      "saadparwaiz1/cmp_luasnip",
+      after = "LuaSnip",
+   },
+   {
+      "hrsh7th/cmp-nvim-lua",
+      after = "cmp_luasnip",
+   },
+   {
+      "hrsh7th/cmp-nvim-lsp",
+      after = "cmp-nvim-lua",
+      setup = function()
+         vim.cmd [[packadd cmp-nvim-lsp]]
+      end,
+   },
+   {
+      "hrsh7th/cmp-buffer",
+      after = "cmp-nvim-lsp",
+   },
+   {
+      "hrsh7th/cmp-path",
+      after = "cmp-buffer",
+   },
+   ------------------------------- Cmp End ------------------------------------
+   --
+   ------------------------ Telescope ------------------------------
+   {
+      "nvim-telescope/telescope.nvim",
+      module = "telescope",
+      cmd = "Telescope",
+      config = function()
+         require "plugins.configs.telescope"
+      end,
+      setup = function()
+         require("core.keymaps").telescope_setup()
+      end,
+   },
+   {
+      "nvim-telescope/telescope-fzf-native.nvim",
+      after = "telescope.nvim",
+      -- event = "BufRead",
+      run = "make",
+      setup = function()
+         vim.cmd [[packadd telescope-fzf-native.nvim]]
+      end,
+   },
+   {
+      "nvim-telescope/telescope-project.nvim",
+      opt = true,
+      after = "telescope-fzf-native.nvim",
+      -- event = "BufWinEnter",
+      setup = function()
+         vim.cmd [[packadd telescope-project.nvim]]
+      end,
+   },
+   ------------------------ Telescope End ------------------------------
+   --
+   ------------------------ Navigation -----------------------------
+   {
+      "phaazon/hop.nvim",
+      cmd = {
+         "HopLine",
+         "HopLineStart",
+         "HopWord",
+         "HopPattern",
+         "HopChar1",
+         "HopChar2",
+      },
+      setup = function()
+         require("core.keymaps").hop_setup()
+      end,
+      config = function()
+         require("hop").setup({ keys = "etovxqpdygfblzhckisuran" })
+      end,
+   },
+   -- {
+   --    "ggandor/lightspeed.nvim",
+   --    event = "BufRead",
+   --    config = function()
+   --       require "plugins.configs.lightspeed"
+   --    end
+   -- },
+   {
+      "andymass/vim-matchup",
+      event = "CursorMoved",
+      after = "nvim-treesitter",
+      config = function()
+         vim.cmd([[let g:matchup_matchparen_offscreen = {'method': 'popup'}]])
+         -- vim.g.matchup_matchparen_offscreen = { method = "popup" }
+      end,
+   },
+   ------------------------ Navigation End -----------------------------
+   --
+   ------------------------ Terminal ----------------------------------
+   {
+      "akinsho/toggleterm.nvim",
+      event = "BufWinEnter",
+      config = function()
+         require "plugins.configs.toggleterm"
+      end
+   },
+   ------------------------ Terminal End -----------------------------
 
--- Have packer use a popup window
-packer.init {
-  display = {
-    open_fn = function()
-      return require("packer.util").float { border = "rounded" }
-    end,
-  },
-  max_jobs = 20,
-  git = {
-    clone_timeout = 6000, -- seconds
-    -- 自定义源
-    -- default_url_format = "https://hub.fastgit.xyz/%s",
-    -- default_url_format = "https://mirror.ghproxy.com/https://github.com/%s",
-    -- default_url_format = "https://gitcode.net/mirrors/%s",
-    -- default_url_format = "https://gitclone.com/github.com/%s",
-  },
+
 }
 
--- Install your plugins here
 return packer.startup(function(use)
-  use "wbthomason/packer.nvim"
-  ---------------------------- plugins ----------------------------
-  use "nvim-lua/popup.nvim"
-  use "nvim-lua/plenary.nvim"
-
-  -- JK Esc
-  use({
-    "jdhao/better-escape.vim",
-    opt = true,
-    event = "InsertEnter"
-  })
-  -- Icons
-  use "kyazdani42/nvim-web-devicons"
-  -- Nvim-tree
-  use({
-    "kyazdani42/nvim-tree.lua",
-    opt = true,
-    cmd = { "NvimTreeToggle", "NvimTreeFindFile" },
-    config = function()
-      require "plugins.configs.nvim-tree"
-    end
-  })
-  -- Bufferline
-  use({
-    "akinsho/bufferline.nvim",
-    opt = true,
-    event = "BufRead",
-    config = function()
-      require "plugins.configs.bufferline"
-    end
-  })
-  -- Lualine
-  use({
-    'arkav/lualine-lsp-progress',
-    after = "nvim-gps"
-  })
-  use({
-    "nvim-lualine/lualine.nvim",
-    after = "lualine-lsp-progress",
-    config = function()
-      require "plugins.configs.lualine"
-    end
-  })
-  -- Telescope
-  use({
-    "nvim-telescope/telescope.nvim",
-    config = function()
-      require "plugins.configs.telescope"
-    end
-  })
-  -- Dashboard
-  use({
-    "goolord/alpha-nvim",
-    config = function()
-      require "plugins.configs.alpha"
-    end
-  })
-  -- Project
-  use({
-    "ahmedkhalf/project.nvim",
-    config = function()
-      require "plugins.configs.project"
-    end
-  })
-  -- Treesitter
-  use {
-    "nvim-treesitter/nvim-treesitter",
-    run = ":TSUpdate",
-    config = function()
-      require "plugins.configs.treesitter"
-    end,
-  }
-  use({
-    "JoosepAlviste/nvim-ts-context-commentstring",
-    after = "nvim-treesitter",
-  })
-  use({
-    "windwp/nvim-ts-autotag",
-    after = "nvim-treesitter",
-    config = function()
-      require("nvim-ts-autotag").setup()
-    end
-  })
-  use({
-    "SmiteshP/nvim-gps",
-    after = "nvim-treesitter",
-  })
-  -- Autopairs
-  use({
-    "windwp/nvim-autopairs",
-    config = function()
-      require "plugins.configs.autopairs"
-    end
-  })
-  -- Comment
-  use({
-    "numToStr/Comment.nvim",
-    config = function()
-      require "plugins.configs.comment"
-    end
-  })
-  -- Buffer 优雅退出
-  use "moll/vim-bbye"
-  -- Impatient 启动加速缓存
-  use "lewis6991/impatient.nvim"
-  -- Indent 缩进
-  use({
-    "lukas-reineke/indent-blankline.nvim",
-    config = function()
-      require "plugins.configs.indentline"
-    end
-  })
-  -- Git
-  use({
-    "lewis6991/gitsigns.nvim",
-    config = function()
-      require "plugins.configs.gitsigns"
-    end
-  })
-  -- use({
-  --   "tpope/vim-fugitive",
-  --   opt = true,
-  --   cmd = { "Git", "G" },
-  -- })
-  -- Colorizer
-  use({
-    "norcalli/nvim-colorizer.lua",
-    config = function()
-      require "plugins.configs.colorizer"
-    end
-  })
-  -- StartupTime
-  use({
-    "dstein64/vim-startuptime",
-    opt = true,
-    cmd = { "StartupTime" }
-  })
-  -- specs
-  use({
-    "edluffy/specs.nvim",
-    opt = true,
-    event = "CursorMoved",
-    config = function ()
-      require "plugins.configs.specs"
-    end
-  })
-  ---------------------------- LSP ----------------------------
-  -- Lsp-config
-  use({
-    "neovim/nvim-lspconfig",
-    config = function()
-      require "plugins.configs.lsp"
-    end
-  })
-  use "williamboman/nvim-lsp-installer"
-  use({
-    "ray-x/lsp_signature.nvim",
-    config = function()
-      require "plugins.configs.lsp.lsp_signature"
-    end
-  })
-  -- Null-ls formatters and linters
-  use "jose-elias-alvarez/null-ls.nvim"
-  use "b0o/schemastore.nvim" -- json schema
-  use "jose-elias-alvarez/nvim-lsp-ts-utils"
-  use({
-    "simrat39/rust-tools.nvim",
-    config = function()
-      require "plugins.configs.lsp.rust_tools"
-    end
-  })
-  -- Renamer
-  use({
-    "filipdutescu/renamer.nvim",
-    config = function()
-      require "plugins.configs.renamer"
-    end
-  })
-  -- 补全引擎
-  use({
-    "hrsh7th/nvim-cmp",
-    config = function()
-      require "plugins.configs.cmp"
-    end
-  })
-  use "hrsh7th/cmp-buffer" -- buffer completions
-  use "hrsh7th/cmp-path" -- path completions
-  use "hrsh7th/cmp-cmdline" -- cmdline completions
-  use "saadparwaiz1/cmp_luasnip" -- snippet completions
-  use "hrsh7th/cmp-nvim-lsp"
-
-  -- snippet 引擎
-  use "L3MON4D3/LuaSnip"
-  -- 常见编程语言代码段
-  use "rafamadriz/friendly-snippets"
-  -- other
-  use "antoinemadec/FixCursorHold.nvim" -- This is needed to fix lsp doc highlight
-
-  ---------------------------- Colorschemes ----------------------------
-  use "folke/tokyonight.nvim"
-  -- use 'rmehri01/onenord.nvim'
-  -- use "SwaggyZzz/gruvbox-baby"
-  -- use "mhartington/oceanic-next"
-  use({
-    "catppuccin/nvim",
-    as = "catppuccin",
-    config = function()
-      require "plugins.configs.catppuccin"
-    end
-  })
-  ---------------------------- Editor ----------------------------
-  -- 跳转到单词
-  use({
-    "unblevable/quick-scope",
-    config = function()
-      require "plugins.configs.quick-scope"
-    end
-  })
-  -- 快速查找跳转
-  use({
-    "phaazon/hop.nvim",
-    opt = true,
-    branch = 'v1',
-    cmd = {
-      "HopLine",
-      "HopLineStart",
-      "HopWord",
-      "HopPattern",
-      "HopChar1",
-      "HopChar2",
-    },
-    config = function()
-      require("hop").setup({ keys = "etovxqpdygfblzhckisuran" })
-    end,
-  })
-  -- Peeking the buffer while entering command :{number}
-  -- use({
-  --   "nacro90/numb.nvim",
-  --   config = function()
-  --     require "plugins.configs.numb"
-  --   end,
-  -- })
-  -- surround
-  use({
-    "Mephistophiles/surround.nvim",
-    config = function()
-      require "plugins.configs.surround"
-    end,
-  })
-  -- vim-matchup
-  use({
-    "andymass/vim-matchup",
-    after = "nvim-treesitter",
-    config = function ()
-      require "plugins.configs.matchup"
-    end
-  })
-  -- vim-cool
-  use({
-    "romainl/vim-cool",
-    opt = true,
-    event = { "CursorMoved", "InsertEnter" },
-  })
-  -- tabout
-  use({
-    "abecodes/tabout.nvim",
-    opt = true,
-    event = "InsertEnter",
-    wants = "nvim-treesitter",
-    after = "nvim-cmp",
-    config = function ()
-      require "plugins.configs.tabout"
-    end
-  })
-  -- DiffView
-  use({
-    "sindrets/diffview.nvim",
-    opt = true,
-    cmd = { "DiffviewOpen" },
-  })
-  -- Show Code Structure
-  use ({
-    'stevearc/aerial.nvim',
-    after = "nvim-lspconfig",
-    config = function ()
-      require "plugins.configs.aerial"
-    end
-  })
-
-  ---------------------------- Term ----------------------------
-  use({
-    "akinsho/toggleterm.nvim",
-    config = function()
-      require "plugins.configs.toggleterm"
-    end
-  })
-
-  -- Automatically set up your configuration after cloning packer.nvim
-  -- Put this at the end after all plugins
-  if PACKER_BOOTSTRAP then
-    require("packer").sync()
-  end
+   for _, v in pairs(plugins) do
+      use(v)
+   end
 end)

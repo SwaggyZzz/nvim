@@ -3,12 +3,11 @@ if not status_ok then
 	return
 end
 
-local plugin_maps = require "plugins.keymaps.mappings"
-local m = plugin_maps.term
+local m = require "core.keymaps".terminal
 
 toggleterm.setup({
 	size = 20,
-	open_mapping = [[<c-\>]],
+	open_mapping = m.toggle,
 	hide_numbers = true,
 	shade_filetypes = {},
 	shade_terminals = true,

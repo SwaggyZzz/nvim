@@ -102,7 +102,7 @@ local aerial = {
 lualine.setup({
 	options = {
 		icons_enabled = true,
-    theme = "catppuccin",
+    -- theme = "catppuccin",
 		-- theme = "tokyonight",
     -- theme = "auto",
     component_separators = { left = "|", right = "|" },

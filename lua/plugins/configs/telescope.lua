@@ -3,98 +3,119 @@ if not status_ok then
   return
 end
 
+local m = require "core.keymaps".telescope
+
+local previewers = require "telescope.previewers"
+local sorters = require "telescope.sorters"
 local actions = require "telescope.actions"
-local plugin_maps = require "plugins.keymaps.mappings"
-local im = plugin_maps.telescope.insert
-local nm = plugin_maps.telescope.normal
 
 telescope.setup {
   defaults = {
-
+    file_previewer = previewers.vim_buffer_cat.new,
+    grep_previewer = previewers.vim_buffer_vimgrep.new,
+    qflist_previewer = previewers.vim_buffer_qflist.new,
+    file_sorter = sorters.get_fuzzy_file,
+    generic_sorter = sorters.get_generic_fuzzy_sorter,
     prompt_prefix = " ",
     selection_caret = " ",
-    path_display = { "smart" },
-
+    entry_prefix = "  ",
+    initial_mode = "insert",
+    selection_strategy = "reset",
+    sorting_strategy = "descending",
+    layout_strategy = "horizontal",
+    layout_config = {
+      width = 0.75,
+      preview_cutoff = 120,
+      horizontal = {
+        preview_width = function(_, cols, _)
+          if cols < 120 then
+            return math.floor(cols * 0.5)
+          end
+          return math.floor(cols * 0.6)
+        end,
+        mirror = false,
+      },
+      vertical = { mirror = false },
+    },
+    vimgrep_arguments = {
+      "rg",
+      "--color=never",
+      "--no-heading",
+      "--with-filename",
+      "--line-number",
+      "--column",
+      "--smart-case",
+      "--hidden",
+      "--glob=!.git/",
+    },
     mappings = {
       i = {
-        [im.cycle_history_next] = actions.cycle_history_next,
-        [im.cycle_history_prev] = actions.cycle_history_prev,
+        [m.cycle_history_next] = actions.cycle_history_next,
+        [m.cycle_history_prev] = actions.cycle_history_prev,
 
-        [im.move_selection_next]= actions.move_selection_next,
-        [im.move_selection_previous]= actions.move_selection_previous,
+        [m.move_selection_next]= actions.move_selection_next,
+        [m.move_selection_previous]= actions.move_selection_previous,
 
-        [im.move_selection_next_down]= actions.move_selection_next,
-        [im.move_selection_previous_up]= actions.move_selection_previous,
+        [m.close]= actions.close,
 
-        [im.close]= actions.close,
+        [m.select_default]= actions.select_default,
+        [m.select_horizontal]= actions.select_horizontal,
+        [m.select_vertical]= actions.select_vertical,
 
+        [m.preview_scrolling_up]= actions.preview_scrolling_up,
+        [m.preview_scrolling_down]= actions.preview_scrolling_down,
 
-        [im.select_default]= actions.select_default,
-        [im.select_horizontal]= actions.select_horizontal,
-        [im.select_vertical]= actions.select_vertical,
-        [im.select_tab]= actions.select_tab,
-
-        [im.preview_scrolling_up]= actions.preview_scrolling_up,
-        [im.preview_scrolling_down]= actions.preview_scrolling_down,
-
-        [im.results_scrolling_up]= actions.results_scrolling_up,
-        [im.results_scrolling_down]= actions.results_scrolling_down,
-
-        [im.toggle_selection_move_selection_worse]= actions.toggle_selection + actions.move_selection_worse,
-        [im.toggle_selection_move_selection_better]= actions.toggle_selection + actions.move_selection_better,
-        [im.send_to_qflist_open_qflist]= actions.send_to_qflist + actions.open_qflist,
-        [im.send_selected_to_qflist_open_qflist]= actions.send_selected_to_qflist + actions.open_qflist,
-        [im.complete_tag]= actions.complete_tag,
-        [im.which_key]= actions.which_key, -- keys from pressing <C-/>
+        ["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
       },
 
       n = {
-        [nm.close] = actions.close,
-        [nm.select_default] = actions.select_default,
-        [nm.select_horizontal] = actions.select_horizontal,
-        [nm.select_vertical] = actions.select_vertical,
-        [nm.select_tab] = actions.select_tab,
+        [m.select_default] = actions.select_default,
+        [m.select_horizontal] = actions.select_horizontal,
+        [m.select_vertical] = actions.select_vertical,
 
-        [nm.toggle_selection_move_selection_worse] = actions.toggle_selection + actions.move_selection_worse,
-        [nm.toggle_selection_move_selection_better] = actions.toggle_selection + actions.move_selection_better,
-        [nm.send_to_qflist_open_qflist] = actions.send_to_qflist + actions.open_qflist,
-        [nm.send_selected_to_qflist_open_qflist] = actions.send_selected_to_qflist + actions.open_qflist,
+        [m.n_close] = actions.close,
 
-        [nm.move_selection_next] = actions.move_selection_next,
-        [nm.move_selection_previous] = actions.move_selection_previous,
-        [nm.move_to_top] = actions.move_to_top,
-        [nm.move_to_middle] = actions.move_to_middle,
-        [nm.move_to_bottom] = actions.move_to_bottom,
+        [m.move_selection_next] = actions.move_selection_next,
+        [m.move_selection_previous] = actions.move_selection_previous,
 
-        [nm.move_selection_next_down] = actions.move_selection_next,
-        [nm.move_selection_previous_up] = actions.move_selection_previous,
-        [nm.move_to_top_gg] = actions.move_to_top,
-        [nm.move_to_bottom_G] = actions.move_to_bottom,
+        [m.preview_scrolling_up] = actions.preview_scrolling_up,
+        [m.preview_scrolling_down] = actions.preview_scrolling_down,
 
-        [nm.preview_scrolling_up] = actions.preview_scrolling_up,
-        [nm.preview_scrolling_down] = actions.preview_scrolling_down,
+        ["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
 
-        [nm.results_scrolling_up] = actions.results_scrolling_up,
-        [nm.results_scrolling_down] = actions.results_scrolling_down,
-
-        -- [nm.cycle_history_next] = actions.which_key,
+        -- [m.move_to_top] = actions.move_to_top,
+        -- [m.move_to_middle] = actions.move_to_middle,
+        -- [m.move_to_bottom] = actions.move_to_bottom,
+        -- [m.move_to_top_gg] = actions.move_to_top,
+        -- [m.move_to_bottom_G] = actions.move_to_bottom,
+      },
+    },
+    file_ignore_patterns = {},
+    path_display = { shorten = 5 },
+    winblend = 0,
+    border = {},
+    borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
+    color_devicons = true,
+    set_env = { ["COLORTERM"] = "truecolor" }, -- default = nil,
+    pickers = {
+      find_files = {
+        find_command = { "fd", "--type=file", "--hidden", "--smart-case" },
+      },
+      live_grep = {
+        --@usage don't include the filename in the search results
+        only_sort_text = true,
       },
     },
   },
-  pickers = {
-    -- Default configuration for builtin pickers goes here:
-    -- picker_name = {
-    --   picker_config_key = value,
-    --   ...
-    -- }
-    -- Now the picker_config_key will be applied every time you call this
-    -- builtin picker
-  },
   extensions = {
-    -- Your extension configuration goes here:
-    -- extension_name = {
-    --   extension_config_key = value,
-    -- }
-    -- please take a look at the readme of the extension you want to configure
+    fzf = {
+      fuzzy = true, -- false will only do exact matching
+      override_generic_sorter = true, -- override the generic sorter
+      override_file_sorter = true, -- override the file sorter
+      case_mode = "smart_case", -- or "ignore_case" or "respect_case"
+    },
   },
 }
+
+telescope.load_extension('fzf')
+telescope.load_extension("project")

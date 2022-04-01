@@ -1,3 +1,6 @@
+local opt = vim.opt
+local g = vim.g
+
 local options = {
   backup = false,                          -- creates a backup file
   clipboard = "unnamedplus",               -- allows neovim to access the system clipboard
@@ -34,12 +37,41 @@ local options = {
   sidescrolloff = 8,
 }
 
-vim.opt.shortmess:append "c"
+-- disable nvim intro
+-- opt.shortmess:append "sI"
+
+opt.shortmess:append "c"
+-- go to previous/next line with h,l,left arrow and right arrow
+-- when cursor reaches end/beginning of line
+opt.whichwrap:append "<>[]hl"
 
 for k, v in pairs(options) do
-  vim.opt[k] = v
+  opt[k] = v
 end
 
-vim.cmd "set whichwrap+=<,>,[,],h,l"
-vim.cmd [[set iskeyword+=-]]
-vim.cmd [[set formatoptions-=cro]] -- TODO: this doesn't seem to work
+
+-- disable some builtin vim plugins
+local disabled_built_ins = {
+   "2html_plugin",
+   "getscript",
+   "getscriptPlugin",
+   "gzip",
+   "logipat",
+   "netrw",
+   "netrwPlugin",
+   "netrwSettings",
+   "netrwFileHandlers",
+   "matchit",
+   "tar",
+   "tarPlugin",
+   "rrhelper",
+   "spellfile_plugin",
+   "vimball",
+   "vimballPlugin",
+   "zip",
+   "zipPlugin",
+}
+
+for _, plugin in pairs(disabled_built_ins) do
+   g["loaded_" .. plugin] = 1
+end
