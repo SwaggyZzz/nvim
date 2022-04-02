@@ -22,22 +22,23 @@ local plugins = {
    },
    {
       "goolord/alpha-nvim",
-      event = "BufWinEnter",
+      -- event = "BufWinEnter",
       config = function()
          require "plugins.configs.alpha"
       end
    },
    {
       "nvim-lualine/lualine.nvim",
-      after = "lualine-lsp-progress",
+      after = "nvim-web-devicons",
+      -- after = "lualine-lsp-progress",
       config = function()
          require "plugins.configs.lualine"
       end
    },
-   {
-      'arkav/lualine-lsp-progress',
-      after = "nvim-gps"
-   },
+   -- {
+   --    'arkav/lualine-lsp-progress',
+   --    after = "nvim-gps"
+   -- },
    {
       "akinsho/bufferline.nvim",
       event = "BufRead",
@@ -56,7 +57,7 @@ local plugins = {
       end
    },
    {
-      "NvChad/nvim-colorizer.lua",
+      "norcalli/nvim-colorizer.lua",
       event = "BufRead",
       config = function()
          require "plugins.configs.colorizer"
@@ -120,7 +121,6 @@ local plugins = {
    },
    {
       "petertriho/nvim-scrollbar",
-      opt = true,
       event = "BufRead",
       config = function()
          require("scrollbar").setup()
@@ -135,20 +135,18 @@ local plugins = {
          require "plugins.configs.treesitter"
       end,
    },
-   {
-      "SmiteshP/nvim-gps",
-      after = "nvim-treesitter",
-   },
+   -- {
+   --    "SmiteshP/nvim-gps",
+   --    after = "nvim-treesitter",
+   -- },
    {
       "JoosepAlviste/nvim-ts-context-commentstring",
       event = "BufRead",
    },
    {
       "windwp/nvim-ts-autotag",
-      ft = { "html", "xml", "typescriptreact" },
-      config = function()
-         require("nvim-ts-autotag").setup()
-      end
+      after = "nvim-treesitter",
+      ft = { 'html', 'javascript', 'typescript', 'javascriptreact', 'typescriptreact', 'svelte', 'vue', 'tsx', 'jsx', 'xml', },
    },
    {
       "p00f/nvim-ts-rainbow",
@@ -183,32 +181,25 @@ local plugins = {
    },
    {
       "jose-elias-alvarez/nvim-lsp-ts-utils",
-      after = "nvim-lspconfig",
-      setup = function()
-         vim.cmd [[packadd nvim-lsp-ts-utils]]
-         require("core.utils").packer_lazy_load "nvim-lsp-ts-utils"
-      end,
    },
    {
-      "jose-elias-alvarez/null-ls.nvim",
-      after = "nvim-lspconfig",
-      setup = function()
-         vim.cmd [[packadd null-ls.nvim]]
-         require("core.utils").packer_lazy_load "null-ls.nvim"
-      end,
+      -- "jose-elias-alvarez/null-ls.nvim",
+      -- after = "nvim-lspconfig",
+      -- setup = function()
+      --    vim.cmd [[packadd null-ls.nvim]]
+      --    require("core.utils").packer_lazy_load "null-ls.nvim"
+      -- end,
+      -- config = function()
+      --    require("plugins.configs.lsp.null-ls")
+      -- end
    },
    {
       "b0o/schemastore.nvim",
-      after = "nvim-lspconfig",
-      setup = function()
-         vim.cmd [[packadd schemastore.nvim]]
-         require("core.utils").packer_lazy_load "schemastore.nvim"
-      end,
    },
 
    {
       "ray-x/lsp_signature.nvim",
-      event = "BufRead",
+      -- event = "BufRead",
       after = "nvim-lspconfig",
       config = function()
          require "plugins.configs.lsp.lsp_signature"
@@ -243,7 +234,7 @@ local plugins = {
       "L3MON4D3/LuaSnip",
       after = "nvim-cmp",
       config = function()
-         require "plugins.configs.luasnip"
+         require "plugins.configs.lua_snip"
       end
    },
    {
@@ -330,11 +321,9 @@ local plugins = {
    -- },
    {
       "andymass/vim-matchup",
-      event = "CursorMoved",
-      after = "nvim-treesitter",
-      config = function()
-         vim.cmd([[let g:matchup_matchparen_offscreen = {'method': 'popup'}]])
-         -- vim.g.matchup_matchparen_offscreen = { method = "popup" }
+      opt = true,
+      setup = function()
+         require("core.utils").packer_lazy_load "vim-matchup"
       end,
    },
    ------------------------ Navigation End -----------------------------

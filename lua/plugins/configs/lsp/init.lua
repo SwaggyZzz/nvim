@@ -6,8 +6,6 @@
 -- vim.cmd([[packadd lsp_signature.nvim]])
 -- vim.cmd([[packadd aerial.nvim]])
 
-require("plugins.configs.lsp.null-ls")
-
 local status_ok, lsp_installer = pcall(require, "nvim-lsp-installer")
 if not status_ok then
 	return
@@ -126,3 +124,5 @@ vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
 vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
   border = "rounded",
 })
+
+-- require("plugins.configs.lsp.null-ls")

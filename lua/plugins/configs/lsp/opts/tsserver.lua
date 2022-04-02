@@ -1,15 +1,16 @@
-local status_ok, ts_utils = pcall(require, "nvim-lsp-ts-utils")
-if not status_ok then
-  return
-end
 local common_on_attach = require("plugins.configs.lsp.utils").common_on_attach
 
 return {
-  flags = {
-    debounce_text_changes = 150,
-  },
-  init_options = ts_utils.init_options,
+  single_file_support = true,
+  -- init_options = ts_utils.init_options,
   on_attach = function(client, bufnr)
+    -- 禁用格式化功能，交给专门插件插件处理
+    -- client.resolved_capabilities.document_formatting = false
+    -- client.resolved_capabilities.document_range_formatting = false
+
+    common_on_attach(client, bufnr)
+
+    local ts_utils = require("nvim-lsp-ts-utils")
     ts_utils.setup({
       debug = false,
       disable_commands = false,
@@ -39,17 +40,11 @@ return {
     -- required to fix code action ranges and filter diagnostics
     ts_utils.setup_client(client)
 
-    -- 禁用格式化功能，交给专门插件插件处理
-    client.resolved_capabilities.document_formatting = false
-    client.resolved_capabilities.document_range_formatting = false
-
-    common_on_attach(client, bufnr)
-
     -- no default maps, so you may want to define some here
-    local opts = { silent = true }
-    vim.api.nvim_buf_set_keymap(bufnr, "n", "gs", ":TSLspOrganize<CR>", opts)
-    vim.api.nvim_buf_set_keymap(bufnr, "n", "gr", ":TSLspRenameFile<CR>", opts)
-    vim.api.nvim_buf_set_keymap(bufnr, "n", "gi", ":TSLspImportAll<CR>", opts)
+    -- local opts = { silent = true }
+    -- vim.api.nvim_buf_set_keymap(bufnr, "n", "gs", ":TSLspOrganize<CR>", opts)
+    -- vim.api.nvim_buf_set_keymap(bufnr, "n", "gr", ":TSLspRenameFile<CR>", opts)
+    -- vim.api.nvim_buf_set_keymap(bufnr, "n", "gi", ":TSLspImportAll<CR>", opts)
 
   end,
 }

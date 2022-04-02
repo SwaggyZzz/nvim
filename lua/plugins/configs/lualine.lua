@@ -3,38 +3,38 @@ if not status_ok then
 	return
 end
 
-local gps_status_ok, gps = pcall(require, "nvim-gps")
-if not gps_status_ok then
-	return
-end
+-- local gps_status_ok, gps = pcall(require, "nvim-gps")
+-- if not gps_status_ok then
+-- 	return
+-- end
 
-gps.setup({
-	icons = {
-		["class-name"] = " ", -- Classes and class-like objects
-		["function-name"] = " ", -- Functions
-		["method-name"] = " ", -- Methods (functions inside class-like objects)
-	},
-	languages = {
-		-- You can disable any language individually here
-		["c"] = true,
-		["cpp"] = true,
-		["go"] = true,
-		["java"] = true,
-		["javascript"] = true,
-		["lua"] = true,
-		["python"] = true,
-		["rust"] = true,
-	},
-	separator = " > ",
-})
+-- gps.setup({
+-- 	icons = {
+-- 		["class-name"] = " ", -- Classes and class-like objects
+-- 		["function-name"] = " ", -- Functions
+-- 		["method-name"] = " ", -- Methods (functions inside class-like objects)
+-- 	},
+-- 	languages = {
+-- 		-- You can disable any language individually here
+-- 		["c"] = true,
+-- 		["cpp"] = true,
+-- 		["go"] = true,
+-- 		["java"] = true,
+-- 		["javascript"] = true,
+-- 		["lua"] = true,
+-- 		["python"] = true,
+-- 		["rust"] = true,
+-- 	},
+-- 	separator = " > ",
+-- })
 
-local function gps_content()
-	if gps.is_available() then
-		return gps.get_location()
-	else
-		return ""
-	end
-end
+-- local function gps_content()
+-- 	if gps.is_available() then
+-- 		return gps.get_location()
+-- 	else
+-- 		return ""
+-- 	end
+-- end
 
 local hide_in_width = function()
 	return vim.fn.winwidth(0) > 80
@@ -119,7 +119,7 @@ lualine.setup({
         "lsp_progress",
         spinner_symbols = { " ", " ", " ", " ", " ", " " },
       },
-			{ gps_content, cond = gps.is_available },
+			-- { gps_content, cond = gps.is_available },
 		},
 		-- lualine_x = { "encoding", "fileformat", "filetype" },
 		-- lualine_x = { diff, spaces, "encoding", "filetype" },
@@ -137,6 +137,6 @@ lualine.setup({
 	},
 	tabline = {},
 	extensions = {
-		aerial,
+		-- aerial,
 	},
 })
