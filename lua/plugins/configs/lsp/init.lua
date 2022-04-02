@@ -35,6 +35,7 @@ local servers = {
   cssls = "",
   html = "",
   tailwindcss = "",
+  eslint = "",
 }
 
 -- 自动安装 Language Servers
@@ -125,4 +126,5 @@ vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.s
   border = "rounded",
 })
 
--- require("plugins.configs.lsp.null-ls")
+require("plugins.configs.lsp.null-ls")
+-- require("plugins.configs.lsp.efm").setup(common_on_attach, capabilities)

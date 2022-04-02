@@ -3,7 +3,7 @@ if not cmp_status_ok then
   return
 end
 
-local m = require "core.keymaps".cmp
+local m = require("core.keymaps").cmp
 
 local check_backspace = function()
   local col = vim.fn.col "." - 1
@@ -48,7 +48,7 @@ cmp.setup {
   },
   mapping = {
     [m.select_prev_item] = cmp.mapping.select_prev_item(),
-		[m.select_next_item] = cmp.mapping.select_next_item(),
+    [m.select_next_item] = cmp.mapping.select_next_item(),
     [m.scroll_docs_up] = cmp.mapping(cmp.mapping.scroll_docs(-1), { "i", "c" }),
     [m.scroll_docs_down] = cmp.mapping(cmp.mapping.scroll_docs(1), { "i", "c" }),
     [m.show_complete] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),

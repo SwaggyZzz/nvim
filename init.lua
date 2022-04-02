@@ -20,4 +20,3 @@ end
 
 -- non plugin mappings
 require("core.keymaps").init()
--- require "plugins.configs.lsp"
