@@ -43,7 +43,7 @@ M.init = function()
   map("n", "Y", "yg$")
 
   -- don't yank text on cut ( x )
-  map({ "n", "v" }, "x", '"_x')
+  -- map({ "n", "v" }, "x", '"_x')
 
   -- don't yank text on delete ( dd )
   map({ "n", "v" }, "d", '"_d')
@@ -129,6 +129,17 @@ end
 M.bufferline_setup = function()
   nmap("<C-l>", ":BufferLineCycleNext <CR>")
   nmap("<C-h>", ":BufferLineCyclePrev <CR>")
+  nmap("<A-S-l>", "<cmd>BufferLineMoveNext<cr>")
+  nmap("<A-S-h>", "<cmd>BufferLineMovePrev<cr>")
+  nmap("<leader>1", "<Cmd>BufferLineGoToBuffer 1<CR>")
+  nmap("<leader>2", "<Cmd>BufferLineGoToBuffer 2<CR>")
+  nmap("<leader>3", "<Cmd>BufferLineGoToBuffer 3<CR>")
+  nmap("<leader>4", "<Cmd>BufferLineGoToBuffer 4<CR>")
+  nmap("<leader>5", "<Cmd>BufferLineGoToBuffer 5<CR>")
+  nmap("<leader>6", "<Cmd>BufferLineGoToBuffer 6<CR>")
+  nmap("<leader>7", "<Cmd>BufferLineGoToBuffer 7<CR>")
+  nmap("<leader>8", "<Cmd>BufferLineGoToBuffer 8<CR>")
+  nmap("<leader>9", "<Cmd>BufferLineGoToBuffer 9<CR>")
 end
 
 M.comment_setup = function()
@@ -221,6 +232,19 @@ M.terminal = {
 M.renamer_setup = function()
   nmap("<leader>rn", '<cmd>lua require("renamer").rename()<cr>')
   map("v", "<leader>rn", '<cmd>lua require("renamer").rename()<cr>')
+end
+M.treesitter_setup = function()
+  nmap("<A-S-i>", "gg=G")
+end
+M.trouble_setup = function()
+  nmap("<leader>tt", "<cmd>TroubleToggle<cr>")
+  nmap("<leader>tw", "<cmd>TroubleToggle workspace_diagnostics<cr>")
+  nmap("<leader>td", "<cmd> TroubleToggle document_diagnostics<cr>")
+  nmap("<leader>tq", "<cmd>TroubleToggle quickfix<cr>")
+  nmap("gR", "<cmd>TroubleToggle lsp_references<cr>")
+end
+M.aerial_setup = function()
+  nmap("<leader>o", "<cmd>AerialToggle<cr>")
 end
 
 return M

@@ -3,40 +3,64 @@ if not status_ok then
   return
 end
 
-local m = require "core.keymaps".telescope
+local m = require("core.keymaps").telescope
+
+-- local previewers = require "telescope.previewers"
+-- local sorters = require "telescope.sorters"
+local actions = require "telescope.actions"
 
 local previewers = require "telescope.previewers"
-local sorters = require "telescope.sorters"
-local actions = require "telescope.actions"
+local Job = require "plenary.job"
+local new_maker = function(filepath, bufnr, opts)
+  filepath = vim.fn.expand(filepath)
+  Job
+    :new({
+      command = "file",
+      args = { "--mime-type", "-b", filepath },
+      on_exit = function(j)
+        local mime_type = vim.split(j:result()[1], "/")[1]
+        if mime_type == "text" then
+          previewers.buffer_previewer_maker(filepath, bufnr, opts)
+        else
+          -- maybe we want to write something to the buffer here
+          vim.schedule(function()
+            vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, { "BINARY" })
+          end)
+        end
+      end,
+    })
+    :sync()
+end
 
 telescope.setup {
   defaults = {
-    file_previewer = previewers.vim_buffer_cat.new,
-    grep_previewer = previewers.vim_buffer_vimgrep.new,
-    qflist_previewer = previewers.vim_buffer_qflist.new,
-    file_sorter = sorters.get_fuzzy_file,
-    generic_sorter = sorters.get_generic_fuzzy_sorter,
+    buffer_previewer_maker = new_maker,
+    -- file_previewer = previewers.vim_buffer_cat.new,
+    -- grep_previewer = previewers.vim_buffer_vimgrep.new,
+    -- qflist_previewer = previewers.vim_buffer_qflist.new,
+    -- file_sorter = sorters.get_fuzzy_file,
+    -- generic_sorter = sorters.get_generic_fuzzy_sorter,
     prompt_prefix = " ",
     selection_caret = " ",
     entry_prefix = "  ",
     initial_mode = "insert",
-    selection_strategy = "reset",
-    sorting_strategy = "descending",
-    layout_strategy = "horizontal",
-    layout_config = {
-      width = 0.75,
-      preview_cutoff = 120,
-      horizontal = {
-        preview_width = function(_, cols, _)
-          if cols < 120 then
-            return math.floor(cols * 0.5)
-          end
-          return math.floor(cols * 0.6)
-        end,
-        mirror = false,
-      },
-      vertical = { mirror = false },
-    },
+    -- selection_strategy = "reset",
+    -- sorting_strategy = "descending",
+    -- layout_strategy = "horizontal",
+    -- layout_config = {
+    --   width = 0.98,
+    --   preview_cutoff = 120,
+    --   horizontal = {
+    --     preview_width = function(_, cols, _)
+    --       if cols < 120 then
+    --         return math.floor(cols * 0.5)
+    --       end
+    --       return math.floor(cols * 0.6)
+    --     end,
+    --     mirror = false,
+    --   },
+    --   vertical = { mirror = false },
+    -- },
     vimgrep_arguments = {
       "rg",
       "--color=never",
@@ -53,17 +77,17 @@ telescope.setup {
         [m.cycle_history_next] = actions.cycle_history_next,
         [m.cycle_history_prev] = actions.cycle_history_prev,
 
-        [m.move_selection_next]= actions.move_selection_next,
-        [m.move_selection_previous]= actions.move_selection_previous,
+        [m.move_selection_next] = actions.move_selection_next,
+        [m.move_selection_previous] = actions.move_selection_previous,
 
-        [m.close]= actions.close,
+        [m.close] = actions.close,
 
-        [m.select_default]= actions.select_default,
-        [m.select_horizontal]= actions.select_horizontal,
-        [m.select_vertical]= actions.select_vertical,
+        [m.select_default] = actions.select_default,
+        [m.select_horizontal] = actions.select_horizontal,
+        [m.select_vertical] = actions.select_vertical,
 
-        [m.preview_scrolling_up]= actions.preview_scrolling_up,
-        [m.preview_scrolling_down]= actions.preview_scrolling_down,
+        [m.preview_scrolling_up] = actions.preview_scrolling_up,
+        [m.preview_scrolling_down] = actions.preview_scrolling_down,
 
         ["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
       },
@@ -91,7 +115,7 @@ telescope.setup {
       },
     },
     file_ignore_patterns = {},
-    path_display = { shorten = 5 },
+    path_display = { shorten = { len = 3, exclude = { 1, -1 } } },
     winblend = 0,
     border = {},
     borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
@@ -99,6 +123,8 @@ telescope.setup {
     set_env = { ["COLORTERM"] = "truecolor" }, -- default = nil,
     pickers = {
       find_files = {
+        theme = "dropdown",
+        previewer = false,
         find_command = { "fd", "--type=file", "--hidden", "--smart-case" },
       },
       live_grep = {
@@ -117,5 +143,7 @@ telescope.setup {
   },
 }
 
-telescope.load_extension('fzf')
-telescope.load_extension("project")
+require "plugins.configs.project"
+
+telescope.load_extension "projects"
+telescope.load_extension "fzf"

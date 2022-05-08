@@ -14,12 +14,22 @@ local plugins = {
   { "moll/vim-bbye" },
   { "nathom/filetype.nvim" },
   { "kyazdani42/nvim-web-devicons" },
-  {
-    "lunarvim/onedarker.nvim",
-    config = function()
-      require("onedarker").setup()
-    end,
-  },
+  { "folke/tokyonight.nvim" },
+  { "EdenEast/nightfox.nvim" },
+  { "sainnhe/gruvbox-material" },
+  -- {
+  --   "lunarvim/onedarker.nvim",
+  --   config = function()
+  --     require("onedarker").setup()
+  --   end,
+  -- },
+  -- {
+  --   "rmehri01/onenord.nvim",
+  --   config = function()
+  --     require("onenord").setup()
+  --   end,
+  -- },
+  -- { "shaunsingh/nord.nvim" },
   {
     "goolord/alpha-nvim",
     -- event = "BufWinEnter",
@@ -51,7 +61,7 @@ local plugins = {
   },
   {
     "lukas-reineke/indent-blankline.nvim",
-    event = "BufRead",
+    -- event = "BufRead",
     config = function()
       require "plugins.configs.indentline"
     end,
@@ -126,13 +136,24 @@ local plugins = {
       require("scrollbar").setup()
     end,
   },
+  {
+    "echasnovski/mini.nvim",
+    branch = "stable",
+    event = "BufRead",
+    config = function()
+      require("mini.surround").setup()
+    end,
+  },
   ------------------------------- Treesitter ---------------------------------
   {
     "nvim-treesitter/nvim-treesitter",
-    event = { "BufRead", "BufNewFile" },
+    -- event = { "BufRead", "BufNewFile" },
     run = ":TSUpdate",
     config = function()
       require "plugins.configs.treesitter"
+    end,
+    setup = function()
+      require("core.keymaps").treesitter_setup()
     end,
   },
   -- {
@@ -160,10 +181,19 @@ local plugins = {
     },
   },
   {
-    "p00f/nvim-ts-rainbow",
-    after = "nvim-treesitter",
-    event = "BufRead",
+    "stevearc/aerial.nvim",
+    setup = function()
+      require("core.keymaps").aerial_setup()
+    end,
+    config = function()
+      require "plugins.configs.aerial"
+    end,
   },
+  -- {
+  --   "p00f/nvim-ts-rainbow",
+  --   after = "nvim-treesitter",
+  --   event = "BufRead",
+  -- },
   ------------------------------- Treesitter End ---------------------------------
   --
   -------------------------------- Lsp Config ------------------------------------
@@ -193,9 +223,6 @@ local plugins = {
   {
     "jose-elias-alvarez/nvim-lsp-ts-utils",
   },
-  -- {
-  --    "creativenull/efmls-configs-nvim",
-  -- },
   {
     "jose-elias-alvarez/null-ls.nvim",
     -- after = "nvim-lspconfig",
@@ -210,7 +237,6 @@ local plugins = {
   {
     "b0o/schemastore.nvim",
   },
-
   {
     "ray-x/lsp_signature.nvim",
     -- event = "BufRead",
@@ -220,6 +246,15 @@ local plugins = {
     end,
   },
   { "antoinemadec/FixCursorHold.nvim" }, -- This is needed to fix lsp doc highlight
+  {
+    "folke/trouble.nvim",
+    config = function()
+      require "plugins.configs.trouble"
+    end,
+    setup = function()
+      require("core.keymaps").trouble_setup()
+    end,
+  },
   -- {
   --    "filipdutescu/renamer.nvim",
   --    event = "InsertEnter",
@@ -239,6 +274,7 @@ local plugins = {
   },
   {
     "hrsh7th/nvim-cmp",
+    commit = "4f1358e659d51c69055ac935e618b684cf4f1429",
     after = "friendly-snippets",
     config = function()
       require "plugins.configs.cmp"
@@ -268,7 +304,7 @@ local plugins = {
   },
   {
     "hrsh7th/cmp-cmdline",
-    after = "nvim-cmp"
+    after = "nvim-cmp",
   },
   {
     "hrsh7th/cmp-buffer",
@@ -301,15 +337,16 @@ local plugins = {
       vim.cmd [[packadd telescope-fzf-native.nvim]]
     end,
   },
-  {
-    "nvim-telescope/telescope-project.nvim",
-    opt = true,
-    after = "telescope-fzf-native.nvim",
-    -- event = "BufWinEnter",
-    setup = function()
-      vim.cmd [[packadd telescope-project.nvim]]
-    end,
-  },
+  -- {
+  --   "nvim-telescope/telescope-project.nvim",
+  --   opt = true,
+  --   after = "telescope-fzf-native.nvim",
+  --   -- event = "BufWinEnter",
+  --   setup = function()
+  --     vim.cmd [[packadd telescope-project.nvim]]
+  --   end,
+  -- },
+  { "ahmedkhalf/project.nvim" },
   ------------------------ Telescope End ------------------------------
   --
   ------------------------ Navigation -----------------------------
