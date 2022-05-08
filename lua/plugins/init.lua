@@ -14,22 +14,6 @@ local plugins = {
   { "moll/vim-bbye" },
   { "nathom/filetype.nvim" },
   { "kyazdani42/nvim-web-devicons" },
-  { "folke/tokyonight.nvim" },
-  { "EdenEast/nightfox.nvim" },
-  { "sainnhe/gruvbox-material" },
-  -- {
-  --   "lunarvim/onedarker.nvim",
-  --   config = function()
-  --     require("onedarker").setup()
-  --   end,
-  -- },
-  -- {
-  --   "rmehri01/onenord.nvim",
-  --   config = function()
-  --     require("onenord").setup()
-  --   end,
-  -- },
-  -- { "shaunsingh/nord.nvim" },
   {
     "goolord/alpha-nvim",
     -- event = "BufWinEnter",
@@ -144,6 +128,15 @@ local plugins = {
       require("mini.surround").setup()
     end,
   },
+  ------------------------------- colorschemes -----------------------------------
+  { "folke/tokyonight.nvim" },
+  { "EdenEast/nightfox.nvim" },
+  { "sainnhe/gruvbox-material" },
+  { "mhartington/oceanic-next" },
+  -- { "lunarvim/onedarker.nvim" },
+  { "rmehri01/onenord.nvim" },
+  { "shaunsingh/nord.nvim" },
+
   ------------------------------- Treesitter ---------------------------------
   {
     "nvim-treesitter/nvim-treesitter",
@@ -234,6 +227,8 @@ local plugins = {
     --    require("plugins.configs.lsp.null-ls")
     -- end
   },
+  { "simrat39/rust-tools.nvim" },
+  { "folke/lua-dev.nvim" },
   {
     "b0o/schemastore.nvim",
   },

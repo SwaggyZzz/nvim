@@ -1,6 +1,10 @@
 local common_on_attach = require("plugins.configs.lsp.utils").common_on_attach
 
-return {
+local opts = {
+  flags = {
+    debounce_text_changes = 150,
+  },
+  capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities()),
   single_file_support = true,
   -- init_options = ts_utils.init_options,
   on_attach = function(client, bufnr)
@@ -10,8 +14,8 @@ return {
 
     common_on_attach(client, bufnr)
 
-    local ts_utils = require("nvim-lsp-ts-utils")
-    ts_utils.setup({
+    local ts_utils = require "nvim-lsp-ts-utils"
+    ts_utils.setup {
       debug = false,
       disable_commands = false,
       enable_import_on_completion = false,
@@ -36,7 +40,7 @@ return {
       update_imports_on_move = false,
       require_confirmation_on_move = false,
       watch_dir = nil,
-    })
+    }
     -- required to fix code action ranges and filter diagnostics
     ts_utils.setup_client(client)
 
@@ -45,6 +49,11 @@ return {
     -- vim.api.nvim_buf_set_keymap(bufnr, "n", "gs", ":TSLspOrganize<CR>", opts)
     -- vim.api.nvim_buf_set_keymap(bufnr, "n", "gr", ":TSLspRenameFile<CR>", opts)
     -- vim.api.nvim_buf_set_keymap(bufnr, "n", "gi", ":TSLspImportAll<CR>", opts)
+  end,
+}
 
+return {
+  on_setup = function(server)
+    server:setup(opts)
   end,
 }

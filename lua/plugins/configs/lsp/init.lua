@@ -4,14 +4,14 @@ if not status_ok then
 end
 
 local servers = {
-  sumneko_lua = require "plugins.configs.lsp.opts.sumneko_lua",
-  tsserver = require "plugins.configs.lsp.opts.tsserver",
-  jsonls = require "plugins.configs.lsp.opts.jsonls",
-  rust_analyzer = require "plugins.configs.lsp.opts.rust_analyzer",
+  sumneko_lua = require "plugins.configs.lsp.configs.sumneko_lua",
+  tsserver = require "plugins.configs.lsp.configs.tsserver",
+  jsonls = require "plugins.configs.lsp.configs.jsonls",
+  rust_analyzer = require "plugins.configs.lsp.configs.rust_analyzer",
   gopls = "",
   yamlls = "",
-  cssls = "",
-  html = "",
+  cssls = require "plugins.configs.lsp.configs.css",
+  html = require "plugins.configs.lsp.configs.html",
   tailwindcss = "",
   eslint = "",
 }
@@ -27,22 +27,13 @@ for name, _ in pairs(servers) do
   end
 end
 
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities)
-
-local common_on_attach = require("plugins.configs.lsp.utils").common_on_attach
-
 lsp_installer.on_server_ready(function(server)
-  local opts = {
-    capabilities = capabilities,
-    flags = { debounce_text_changes = 500 },
-    on_attach = common_on_attach,
-  }
   local config = servers[server.name]
   if config ~= "" then
-    opts = vim.tbl_deep_extend("keep", config, opts)
+    config.on_setup(server)
+  else
+    server:setup {}
   end
-  server:setup(opts)
 end)
 
 local signs = {
