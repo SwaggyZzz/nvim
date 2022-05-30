@@ -36,6 +36,7 @@ packer.init {
    },
    git = {
       clone_timeout = 6000, -- seconds
+      default_url_format = "https://mirror.ghproxy.com/https://github.com/%s",
    },
    auto_clean = true,
    compile_on_sync = true,

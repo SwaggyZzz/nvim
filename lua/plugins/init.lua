@@ -125,9 +125,10 @@ local plugins = {
     branch = "stable",
     event = "BufRead",
     config = function()
-      require("mini.surround").setup()
+      require("mini.surround").setup {}
     end,
   },
+  { "sindrets/diffview.nvim", opt = true, cmd = "DiffviewOpen" },
   ------------------------------- colorschemes -----------------------------------
   { "folke/tokyonight.nvim" },
   { "EdenEast/nightfox.nvim" },
