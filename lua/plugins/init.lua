@@ -137,6 +137,9 @@ local plugins = {
   -- { "lunarvim/onedarker.nvim" },
   { "rmehri01/onenord.nvim" },
   { "shaunsingh/nord.nvim" },
+  { "shaunsingh/moonlight.nvim" },
+  { "marko-cerovac/material.nvim" },
+  { "navarasu/onedark.nvim" },
 
   ------------------------------- Treesitter ---------------------------------
   {
@@ -229,6 +232,9 @@ local plugins = {
     -- end
   },
   { "simrat39/rust-tools.nvim" },
+  {
+    "fatih/vim-go",
+  },
   { "folke/lua-dev.nvim" },
   {
     "b0o/schemastore.nvim",

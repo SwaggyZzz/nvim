@@ -143,8 +143,8 @@ M.bufferline_setup = function()
 end
 
 M.comment_setup = function()
-  nmap("<A-/>", ":lua require('Comment.api').toggle_current_linewise()<CR>")
-  map("v", "<A-/>", ":lua require('Comment.api').toggle_linewise_op(vim.fn.visualmode())<CR>")
+  nmap("<A-/>", "gcc", { noremap = false })
+  map("v", "<A-/>", "gcc<ESC>", { noremap = false })
 end
 
 M.lspconfig_setup = function()

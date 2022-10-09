@@ -1,7 +1,17 @@
 local common_on_attach = require("plugins.configs.lsp.utils").common_on_attach
 
 local opts = {
-  capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities()),
+  settings = {
+    gopls = {
+      usePlaceholders = true,
+      analyses = {
+        nilness = true,
+        shadow = true,
+        unusedparams = true,
+        unusewrites = true,
+      },
+    },
+  },
   flags = {
     debounce_text_changes = 150,
   },
@@ -15,11 +25,6 @@ local opts = {
 
 return {
   on_setup = function(server)
-    -- Initialize the LSP via rust-tools instead
-    require("rust-tools").setup {
-      server = vim.tbl_deep_extend("force", server:get_default_options(), opts),
-      -- dap = require("dap.nvim-dap.rust"),
-    }
-    server:attach_buffers()
+    server:setup(opts)
   end,
 }

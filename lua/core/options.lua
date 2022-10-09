@@ -76,3 +76,6 @@ local disabled_built_ins = {
 for _, plugin in pairs(disabled_built_ins) do
   g["loaded_" .. plugin] = 1
 end
+
+-- vim-go 禁用默认 K 映射 GoDoc
+g.go_doc_keywordprg_enabled = 0
